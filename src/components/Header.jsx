@@ -7,9 +7,19 @@ import {
 } from "react-icons/md";
 import { FaUserCircle } from "react-icons/fa";
 
+import { useDispatch, useSelector } from "react-redux";
+import { logout } from "../features/auth/authSlice";
+
 export default function Header() {
   const [open, setOpen] = useState(false);
   const dropdownRef = useRef(null);
+  const dispatch = useDispatch();
+  const { user } = useSelector((state) => state.auth);
+
+  const handleLogout = () => {
+    dispatch(logout());
+    window.location.href = "/login";
+  };
 
   // CLOSE ON OUTSIDE CLICK
   useEffect(() => {
@@ -28,7 +38,7 @@ export default function Header() {
       {/* SEARCH */}
       <div className="h-15 px-4 py-4 ">
         <h1 className="text-xl font-medium text-center text-[#0C55A0]">
-          Welcome Admin
+          Welcome, {user.name || "Admin"}
         </h1>
       </div>
 
@@ -58,9 +68,9 @@ export default function Header() {
               {/* USER INFO */}
               <div className="px-4 py-3 border-b border-gray-300 bg-gray-30">
                 <p className="text-sm font-semibold text-gray-800">
-                  Admin User
+                  {user.name || "Admin User"}
                 </p>
-                <p className="text-xs text-gray-500">admin@namo-gange.com</p>
+                <p className="text-xs text-gray-500">{user.email || "admin@gaonfresh.com"}</p>
               </div>
 
               {/* MENU */}
@@ -78,7 +88,10 @@ export default function Header() {
 
               {/* LOGOUT */}
               <div className="border-t border-gray-200">
-                <div className="flex items-center gap-3 px-4 py-2 text-sm text-red-600 hover:bg-red-50 cursor-pointer transition">
+                <div 
+                  onClick={handleLogout}
+                  className="flex items-center gap-3 px-4 py-2 text-sm text-red-600 hover:bg-red-50 cursor-pointer transition"
+                >
                   <MdLogout className="text-lg" />
                   Logout
                 </div>

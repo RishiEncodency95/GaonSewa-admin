@@ -24,7 +24,7 @@ import {
   FaBlog,
 } from "react-icons/fa";
 import { GoPersonFill } from "react-icons/go";
-import { FiSliders, FiSettings, FiImage, FiMail } from "react-icons/fi";
+import { FiSliders, FiSettings, FiImage, FiMail, FiLayers, FiGlobe } from "react-icons/fi";
 import { BiSolidInstitution } from "react-icons/bi";
 import { AiFillHome } from "react-icons/ai";
 import { SiOpenapiinitiative } from "react-icons/si";
@@ -33,7 +33,7 @@ import { FaDatabase, FaRegUser } from "react-icons/fa6";
 export default function Sidebar() {
   const navigate = useNavigate();
   const location = useLocation();
-  const [openMenu, setOpenMenu] = useState("Drivers");
+  const [openMenu, setOpenMenu] = useState("");
 
   const isActive = (path) => location.pathname === path;
 
@@ -42,71 +42,59 @@ export default function Sidebar() {
   ====================== */
   const sidebarData = [
     {
+      section: "SUPER ADMIN",
+      items: [
+        {
+          label: "Companies",
+          icon: MdCorporateFare,
+          path: "/companies",
+        },
+        {
+          label: "Branches",
+          icon: MdDashboard,
+          path: "/branches",
+        },
+
+
+        // {
+        //   label: "Manage",
+        //   icon: BiSolidInstitution,
+        //   children: [
+        //     { label: "Branches", path: "/branches" },
+        //     { label: "Branch Users", path: "/branch-users" },
+        //   ],
+        // },
+      ],
+    },
+    {
       section: "MAIN",
       items: [
         { label: "Dashboard", path: "/", icon: MdDashboard },
 
         {
-          label: "Home Section",
-          icon: GoPersonFill,
+          label: "Operations",
+          icon: FiLayers,
           children: [
-            { label: "Hero", path: "/hero" },
-            { label: "Delegates List", path: "/delegateList" },
-            { label: "New Data", path: "/newData" },
-            { label: "Warm Data", path: "/warmData" },
-            { label: "Hot Data", path: "/hotData" },
-            { label: "Cold Data", path: "/coldData" },
-            { label: "Master Delegate Data", path: "/masterDelegData" },
+            { label: "Dashboard", path: "/" },
+            { label: "Products", path: "/products" },
+            { label: "Orders", path: "/orders" },
           ],
         },
         {
-          label: "Member",
-          icon: MdCardMembership,
+          label: "Management",
+          icon: FiSettings,
           children: [
-            { label: "Add Member", path: "/addMember" },
-            { label: "Member Menu", path: "/memberMenu" },
+            { label: "Branches", path: "/branches" },
+            { label: "Roles", path: "/roles" },
           ],
         },
         {
-          label: "Volunteer",
-          icon: MdOutlineVolunteerActivism,
+          label: "Website",
+          icon: FiGlobe,
           children: [
-            { label: "Add Volunteer", path: "/addVolunteer" },
-            { label: "Volunteer Menu", path: "/volunteerMenu" },
+            { label: "Hero Section", path: "/hero" },
           ],
         },
-        {
-          label: "Home Banner",
-          icon: FiSliders,
-          path: "/addSlider",
-        },
-
-        {
-          label: "Media",
-          icon: FiImage,
-          children: [
-            { label: "Photos Gallery", path: "/mediaImage" },
-            { label: "Videos Gallery", path: "/mediaVideo" },
-          ],
-        },
-
-        {
-          label: "Communication",
-          icon: FiMail,
-          path: "",
-        },
-
-        {
-          label: "Colleges",
-          icon: BiSolidInstitution,
-          children: [
-            { label: "Add College", path: "/addCollege" },
-            { label: "College List", path: "/collegeList" },
-          ],
-        },
-
-        { label: "Initiatives", path: "/initiatives", icon: MdCorporateFare },
-
       ],
     },
     {
@@ -117,22 +105,7 @@ export default function Sidebar() {
           icon: FaDatabase,
           children: [
             { label: "Add Occupation", path: "/addOccupation" },
-            { label: "Add Organization", path: "/addOrganization" },
-            { label: "Add Designation", path: "/addDesignation" },
-            { label: "Add Department", path: "/addDepartment" },
-            { label: "Add Category", path: "/addCategory" },
-            { label: "Add Profession", path: "/addProfession" },
-            { label: "Add Event", path: "/addEvent" },
-            { label: "Add Status", path: "/addStatus" },
-            { label: "Add University", path: "/addUniversity" },
-            { label: "Add Source", path: "/addSource" },
-            { label: "Add Enquiry", path: "/addEnquiry" },
-            { label: "Add Data", path: "/addSubData" },
-            { label: "Add Target", path: "/addTarget" },
-            { label: "Add Coordinator Status", path: "/addCoordiStatus" },
-            { label: "Add Bank", path: "/addBank" },
-            { label: "Image Category", path: "/imageCategory" },
-            { label: "Video Category", path: "/videoCategory" },
+
           ],
         },
 
