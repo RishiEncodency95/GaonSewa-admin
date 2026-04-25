@@ -67,7 +67,7 @@ export default function Sidebar() {
       ],
     },
     {
-      section: "MAIN",
+      section: "Website Section",
       items: [
         { label: "Dashboard", path: "/", icon: MdDashboard },
 

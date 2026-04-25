@@ -143,10 +143,10 @@ const Hero = () => {
     const currentHeroes = validHeroes.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
 
     return (
-        <div className="space-y-8 p-1">
+        <div className="space-y-4 p-1">
             {/* FORM SECTION */}
             <div className="bg-white rounded-lg shadow-sm border border-slate-100 overflow-hidden">
-                <div className="bg-gradient-to-r from-[#0C55A0] to-[#0a4685] px-8 py-3 border-b border-slate-100 bg-slate-50/50 flex items-center gap-3">
+                <div className="bg-gradient-to-r from-[#0C55A0] to-[#0a4685] px-8 py-2 border-b border-slate-100 bg-slate-50/50 flex items-center gap-3">
                     <div className="p-2.5 bg-blue-100 text-[#0C55A0] rounded-xl shadow-sm">
                         <MdEdit size={22} />
                     </div>
@@ -290,7 +290,7 @@ const Hero = () => {
 
             {/* TABLE SECTION */}
             <div className="bg-white rounded-lg shadow-sm border border-slate-100 overflow-hidden">
-                <div className="bg-gradient-to-r from-[#0C55A0] to-[#0a4685] px-8 py-3 border-b border-slate-100 flex justify-between items-center bg-slate-50/50">
+                <div className="bg-gradient-to-r from-[#0C55A0] to-[#0a4685] px-8 py-2 border-b border-slate-100 flex justify-between items-center bg-slate-50/50">
                     <div>
                         <h2 className="text-slate-200 font-medium text-lg tracking-tight">Hero Content Library</h2>
                         <p className="text-sm font-normal text-slate-200">Manage and organize your visual hero sections</p>

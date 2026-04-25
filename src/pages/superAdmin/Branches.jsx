@@ -217,109 +217,114 @@ export default function Branches() {
   }
 
   return (
-    <div className="space-y-8 p-1">
+    <div className="space-y-4 p-1">
       {/* ── Header ── */}
-      <div className="flex items-center justify-between">
+      <div className="bg-gradient-to-r from-[#0C55A0] to-[#0a4685] rounded px-8 py-2 flex items-center justify-between">
+
+        {/* LEFT: Back Button + Title */}
         <div className="flex items-center gap-3">
           <button
             onClick={() => navigate("/companies")}
-            className="p-2.5 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 text-slate-500 shadow-sm transition-all"
+            className="p-2 rounded-xl border border-white/20 bg-white/10 hover:bg-white/20 text-white transition-all"
             title="Back to Companies"
           >
-            <MdArrowBack size={18} />
+            <MdArrowBack size={16} />
           </button>
-          <div>
-            <h1 className="text-2xl font-extrabold text-slate-800 flex items-center gap-2 tracking-tight">
-              Branch Management
-            </h1>
-            <p className="text-sm text-slate-500 mt-0.5 font-medium">
-              Company:{" "}
-              <span className="font-bold text-indigo-600 px-2 py-0.5 bg-indigo-50 rounded-md">{decodeURIComponent(companyName)}</span>
-            </p>
-          </div>
+          <h1 className="text-base font-medium text-white tracking-tight">
+            Branch Management
+          </h1>
         </div>
+
+        {/* RIGHT: Company Name */}
+        <div className="flex items-center gap-2">
+          <span className="text-sm text-slate-200 font-medium uppercase tracking-wider">Company : </span>
+          <span className="font-medium text-white text-sm px-3 py-1 bg-white/15 border border-white/20 rounded-lg">
+            {decodeURIComponent(companyName)}
+          </span>
+        </div>
+
       </div>
 
       {/* ── Form ── */}
-      <div className="bg-white rounded-3xl shadow-sm border border-slate-100 overflow-hidden">
-        <div className="px-8 py-6 border-b border-slate-100 bg-slate-50/50 flex items-center gap-3">
-          <div className="p-2.5 bg-indigo-100 text-indigo-600 rounded-xl shadow-sm">
+      <div className="bg-white rounded-lg shadow-sm border border-slate-100 overflow-hidden">
+        <div className="bg-gradient-to-r from-[#0C55A0] to-[#0a4685] px-8 py-2 border-b border-slate-100 bg-slate-50/50 flex items-center gap-3">
+          <div className="p-2.5 bg-blue-100 text-[#0C55A0] rounded-xl shadow-sm">
             <FiGitBranch size={22} />
           </div>
           <div>
-            <h2 className="text-slate-800 font-extrabold text-xl tracking-tight">Branch Configuration</h2>
-            <p className="text-slate-500 text-sm font-medium mt-0.5">Register or update branch offices</p>
+            <h2 className="text-slate-200 font-medium text-xl tracking-tight">Branch Configuration</h2>
+            <p className="text-slate-200 text-sm font-medium mt-0.5">Register or update branch offices</p>
           </div>
         </div>
 
-        <form className="p-8" onSubmit={handleSubmit}>
+        <form className="px-6 py-4" onSubmit={handleSubmit}>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
             {/* LEFT COLUMN: Basic & Address */}
-            <div className="space-y-6">
+            <div className="space-y-3">
               <div>
-                <label className="block text-sm font-bold text-slate-700 mb-2 ml-1">Branch Name <span className="text-red-500">*</span></label>
+                <label className="block text-sm font-medium text-slate-700 mb-1 ml-1">Branch Name <span className="text-red-500">*</span></label>
                 <input name="name" value={form.name} onChange={handleChange} placeholder="e.g. North Wing Branch"
-                  className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50 hover:bg-slate-100/50 focus:bg-white focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10 transition-all outline-none text-sm font-medium text-slate-800" />
+                  className="w-full px-4 py-1.5 rounded border border-slate-200 bg-slate-50 hover:bg-slate-100/50 focus:bg-white focus:border-[#0C55A0] focus:ring-1 focus:ring-[#0C55A0]/10 transition-all outline-none text-sm font-normal text-slate-800 placeholder:text-slate-400" />
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
-                  <label className="block text-sm font-bold text-slate-700 mb-2 ml-1">Email</label>
+                  <label className="block text-sm font-medium text-slate-700 mb-1 ml-1">Email</label>
                   <input type="email" name="email" value={form.email} onChange={handleChange} placeholder="branch@company.com"
-                    className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50 hover:bg-slate-100/50 focus:bg-white focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10 transition-all outline-none text-sm font-medium text-slate-800" />
+                    className="w-full px-4 py-1.5 rounded border border-slate-200 bg-slate-50 hover:bg-slate-100/50 focus:bg-white focus:border-[#0C55A0] focus:ring-1 focus:ring-[#0C55A0]/10 transition-all outline-none text-sm font-normal text-slate-800 placeholder:text-slate-400" />
                 </div>
                 <div>
-                  <label className="block text-sm font-bold text-slate-700 mb-2 ml-1">Phone</label>
+                  <label className="block text-sm font-medium text-slate-700 mb-1 ml-1">Phone</label>
                   <input type="text" name="phone" value={form.phone} onChange={handleChange} placeholder="+91 9000000000"
-                    className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50 hover:bg-slate-100/50 focus:bg-white focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10 transition-all outline-none text-sm font-medium text-slate-800" />
+                    className="w-full px-4 py-1.5 rounded border border-slate-200 bg-slate-50 hover:bg-slate-100/50 focus:bg-white focus:border-[#0C55A0] focus:ring-1 focus:ring-[#0C55A0]/10 transition-all outline-none text-sm font-normal text-slate-800 placeholder:text-slate-400" />
                 </div>
               </div>
 
               <div>
-                <label className="block text-sm font-bold text-slate-700 mb-2 ml-1">Street Address</label>
+                <label className="block text-sm font-medium text-slate-700 mb-1 ml-1">Street Address</label>
                 <input type="text" name="address.street" value={form["address.street"]} onChange={handleChange} placeholder="123 Business Rd..."
-                  className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50 hover:bg-slate-100/50 focus:bg-white focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10 transition-all outline-none text-sm font-medium text-slate-800" />
+                  className="w-full px-4 py-1.5 rounded border border-slate-200 bg-slate-50 hover:bg-slate-100/50 focus:bg-white focus:border-[#0C55A0] focus:ring-1 focus:ring-[#0C55A0]/10 transition-all outline-none text-sm font-normal text-slate-800 placeholder:text-slate-400" />
               </div>
             </div>
 
             {/* RIGHT COLUMN: Advanced Address & Hours */}
-            <div className="space-y-6">
+            <div className="space-y-3">
               <div className="grid grid-cols-2 gap-6">
                 <div>
-                  <label className="block text-sm font-bold text-slate-700 mb-2 ml-1">City</label>
+                  <label className="block text-sm font-medium text-slate-700 mb-1 ml-1">City</label>
                   <input type="text" name="address.city" value={form["address.city"]} onChange={handleChange} placeholder="City"
-                    className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50 hover:bg-slate-100/50 focus:bg-white focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10 transition-all outline-none text-sm font-medium text-slate-800" />
+                    className="w-full px-4 py-1.5 rounded border border-slate-200 bg-slate-50 hover:bg-slate-100/50 focus:bg-white focus:border-[#0C55A0] focus:ring-1 focus:ring-[#0C55A0]/10 transition-all outline-none text-sm font-normal text-slate-800 placeholder:text-slate-400" />
                 </div>
                 <div>
-                  <label className="block text-sm font-bold text-slate-700 mb-2 ml-1">State</label>
+                  <label className="block text-sm font-medium text-slate-700 mb-1 ml-1">State</label>
                   <input type="text" name="address.state" value={form["address.state"]} onChange={handleChange} placeholder="State"
-                    className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50 hover:bg-slate-100/50 focus:bg-white focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10 transition-all outline-none text-sm font-medium text-slate-800" />
+                    className="w-full px-4 py-1.5 rounded border border-slate-200 bg-slate-50 hover:bg-slate-100/50 focus:bg-white focus:border-[#0C55A0] focus:ring-1 focus:ring-[#0C55A0]/10 transition-all outline-none text-sm font-normal text-slate-800 placeholder:text-slate-400" />
                 </div>
               </div>
 
               <div className="grid grid-cols-2 gap-6">
                 <div>
-                  <label className="block text-sm font-bold text-slate-700 mb-2 ml-1">Country</label>
+                  <label className="block text-sm font-medium text-slate-700 mb-1 ml-1">Country</label>
                   <input type="text" name="address.country" value={form["address.country"]} onChange={handleChange} placeholder="Country"
-                    className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50 hover:bg-slate-100/50 focus:bg-white focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10 transition-all outline-none text-sm font-medium text-slate-800" />
+                    className="w-full px-4 py-1.5 rounded border border-slate-200 bg-slate-50 hover:bg-slate-100/50 focus:bg-white focus:border-[#0C55A0] focus:ring-1 focus:ring-[#0C55A0]/10 transition-all outline-none text-sm font-normal text-slate-800 placeholder:text-slate-400" />
                 </div>
                 <div>
-                  <label className="block text-sm font-bold text-slate-700 mb-2 ml-1">Pincode</label>
+                  <label className="block text-sm font-medium text-slate-700 mb-1 ml-1">Pincode</label>
                   <input type="text" name="address.pincode" value={form["address.pincode"]} onChange={handleChange} placeholder="110001"
-                    className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50 hover:bg-slate-100/50 focus:bg-white focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10 transition-all outline-none text-sm font-medium text-slate-800" />
+                    className="w-full px-4 py-1.5 rounded border border-slate-200 bg-slate-50 hover:bg-slate-100/50 focus:bg-white focus:border-[#0C55A0] focus:ring-1 focus:ring-[#0C55A0]/10 transition-all outline-none text-sm font-normal text-slate-800 placeholder:text-slate-400" />
                 </div>
               </div>
 
               <div className="grid grid-cols-2 gap-6">
                 <div>
-                  <label className="block text-sm font-bold text-slate-700 mb-2 ml-1">Work Start</label>
+                  <label className="block text-sm font-medium text-slate-700 mb-1 ml-1">Work Start</label>
                   <input type="time" name="workingHours.start" value={form["workingHours.start"]} onChange={handleChange}
-                    className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50 hover:bg-slate-100/50 focus:bg-white focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10 transition-all outline-none text-sm font-medium text-slate-800 cursor-pointer" />
+                    className="w-full px-4 py-1.5 rounded border border-slate-200 bg-slate-50 hover:bg-slate-100/50 focus:bg-white focus:border-[#0C55A0] focus:ring-1 focus:ring-[#0C55A0]/10 transition-all outline-none text-sm font-normal text-slate-800 cursor-pointer " />
                 </div>
                 <div>
-                  <label className="block text-sm font-bold text-slate-700 mb-2 ml-1">Work End</label>
+                  <label className="block text-sm font-medium text-slate-700 mb-1 ml-1">Work End</label>
                   <input type="time" name="workingHours.end" value={form["workingHours.end"]} onChange={handleChange}
-                    className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50 hover:bg-slate-100/50 focus:bg-white focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10 transition-all outline-none text-sm font-medium text-slate-800 cursor-pointer" />
+                    className="w-full px-4 py-1.5 rounded border border-slate-200 bg-slate-50 hover:bg-slate-100/50 focus:bg-white focus:border-[#0C55A0] focus:ring-1 focus:ring-[#0C55A0]/10 transition-all outline-none text-sm font-normal text-slate-800 cursor-pointer" />
                 </div>
               </div>
             </div>
@@ -328,8 +333,8 @@ export default function Branches() {
           <div className="mt-8 pt-6 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between gap-6">
             <div className="flex flex-col sm:flex-row sm:items-center gap-6 w-full sm:w-auto">
               <div className="w-full sm:w-48">
-                <label className="block text-sm font-bold text-slate-700 mb-2 ml-1">Status</label>
-                <select name="status" value={form.status} onChange={handleChange} className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50 hover:bg-slate-100/50 focus:bg-white focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10 transition-all outline-none text-sm font-medium text-slate-800 cursor-pointer">
+                <label className="block text-sm font-medium text-slate-700 mb-1 ml-1">Status</label>
+                <select name="status" value={form.status} onChange={handleChange} className="w-full px-4 py-1.5 rounded border border-slate-200 bg-slate-50 hover:bg-slate-100/50 focus:bg-white focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500/10 transition-all outline-none text-sm font-medium text-slate-800 cursor-pointer">
                   <option value="Active">Active</option>
                   <option value="Inactive">Inactive</option>
                 </select>
@@ -340,17 +345,17 @@ export default function Branches() {
                   <input type="checkbox" name="isMainBranch" id="isMainBranch" checked={form.isMainBranch} onChange={handleChange} className="toggle-checkbox absolute block w-5 h-5 rounded-full bg-white border-4 appearance-none cursor-pointer border-slate-200 checked:right-0 checked:border-indigo-500 transition-all" />
                   <label htmlFor="isMainBranch" className={`toggle-label block overflow-hidden h-5 rounded-full cursor-pointer ${form.isMainBranch ? 'bg-indigo-500' : 'bg-slate-200'}`}></label>
                 </div>
-                <label htmlFor="isMainBranch" className="text-sm font-bold text-slate-700 cursor-pointer">Headquarters (Main)</label>
+                <label htmlFor="isMainBranch" className="text-sm font-medium text-slate-700 cursor-pointer">Headquarters (Main)</label>
               </div>
             </div>
 
-            <div className="flex items-center gap-3 w-full sm:w-auto">
+            <div className="flex items-center gap-6 w-full sm:w-auto">
               {(editId || form.name || form.email) && (
-                <button type="button" onClick={resetForm} className="w-full sm:w-auto px-6 py-3 bg-slate-100 text-slate-700 font-bold text-sm rounded-xl hover:bg-slate-200 transition-all active:scale-95">
+                <button type="button" onClick={resetForm} className="w-full sm:w-auto px-6 py-1.5 bg-slate-100 text-slate-700 font-medium text-sm rounded shadow-sm hover:shadow-lg hover:-translate-y-0.5 transition-all active:scale-95">
                   Cancel Edit
                 </button>
               )}
-              <button type="submit" disabled={loading || actionLoading} className="w-full sm:w-auto px-8 py-3 bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-bold text-sm rounded-xl shadow-md hover:shadow-lg hover:-translate-y-0.5 transition-all active:scale-95 disabled:opacity-70 disabled:cursor-not-allowed">
+              <button type="submit" disabled={loading || actionLoading} className="w-full sm:w-auto px-8 py-1.5 bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-medium text-sm rounded shadow-sm hover:shadow-lg hover:-translate-y-0.5 transition-all active:scale-95 disabled:opacity-70 disabled:cursor-not-allowed">
                 {loading || actionLoading ? 'Processing...' : editId ? 'Update Branch' : 'Register Branch'}
               </button>
             </div>
@@ -359,11 +364,11 @@ export default function Branches() {
       </div>
 
       {/* ── Branches Table ── */}
-      <div className="bg-white rounded-3xl shadow-sm border border-slate-100 overflow-hidden">
-        <div className="px-8 py-6 border-b border-slate-100 flex flex-col sm:flex-row justify-between items-start sm:items-center bg-slate-50/50 gap-4">
+      <div className="bg-white rounded-lg shadow-sm border border-slate-100 overflow-hidden">
+        <div className="bg-gradient-to-r from-[#0C55A0] to-[#0a4685] px-8 py-2 border-b border-slate-100 flex justify-between items-center bg-slate-50/50">
           <div>
-            <h2 className="text-slate-800 font-extrabold text-lg tracking-tight">Active Branches</h2>
-            <p className="text-sm font-medium text-slate-500 mt-0.5">Manage {filtered.length} locations for {decodeURIComponent(companyName)}</p>
+            <h2 className="text-slate-200 font-medium text-lg tracking-tight">Branches List</h2>
+            <p className="text-sm font-normal text-slate-200">Manage {filtered.length} locations for {decodeURIComponent(companyName)}</p>
           </div>
 
           <div className="relative w-full sm:w-auto">
@@ -372,7 +377,7 @@ export default function Branches() {
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               placeholder="Search by name or email..."
-              className="w-full sm:w-72 pl-10 pr-4 py-2.5 bg-white border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-200 shadow-sm"
+              className="w-full sm:w-72 pl-10 pr-4 py-1.5 bg-white border border-slate-200 rounded text-sm focus:outline-none focus:ring-2 focus:ring-indigo-200 shadow-sm"
             />
           </div>
         </div>

@@ -235,109 +235,109 @@ export default function Companies() {
   };
 
   return (
-    <div className="space-y-8 p-1">
+    <div className="space-y-4 p-1">
 
       {/* ── FORM SECTION ── */}
-      <div className="bg-white rounded-3xl shadow-sm border border-slate-100 overflow-hidden">
-        <div className="px-8 py-6 border-b border-slate-100 bg-slate-50/50 flex items-center gap-3">
+      <div className="bg-white rounded-lg shadow-sm border border-slate-100 overflow-hidden">
+        <div className="bg-gradient-to-r from-[#0C55A0] to-[#0a4685] px-8 py-2 border-b border-slate-100 bg-slate-50/50 flex items-center gap-3">
           <div className="p-2.5 bg-blue-100 text-[#0C55A0] rounded-xl shadow-sm">
             <MdBusiness size={22} />
           </div>
           <div>
-            <h2 className="text-slate-800 font-extrabold text-xl tracking-tight">Company Configuration</h2>
-            <p className="text-slate-500 text-sm font-medium mt-0.5">Register or update business profiles</p>
+            <h2 className="text-slate-200 font-medium text-xl tracking-tight">Company Configuration</h2>
+            <p className="text-slate-200 text-sm font-medium mt-0.5">Register or update business profiles</p>
           </div>
         </div>
 
-        <form className="p-8" onSubmit={handleSubmit}>
+        <form className="px-6 py-4" onSubmit={handleSubmit}>
           <div className="grid grid-cols-1 xl:grid-cols-3 gap-10">
 
             {/* LEFT: INPUTS */}
-            <div className="xl:col-span-2 space-y-6">
+            <div className="xl:col-span-2 space-y-3">
 
               {/* Basic Info */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
-                  <label className="block text-sm font-bold text-slate-700 mb-2 ml-1">Company Name <span className="text-red-500">*</span></label>
+                  <label className="block text-sm font-medium text-slate-700 mb-1 ml-1">Company Name <span className="text-red-500">*</span></label>
                   <input type="text" name="name" value={form.name} onChange={handleChange} placeholder="e.g. Gaon Fresh"
-                    className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50 hover:bg-slate-100/50 focus:bg-white focus:border-[#0C55A0] focus:ring-4 focus:ring-[#0C55A0]/10 transition-all outline-none text-sm font-medium text-slate-800" />
+                    className="w-full px-4 py-1.5 rounded border border-slate-200 bg-slate-50 hover:bg-slate-100/50 focus:bg-white focus:border-[#0C55A0] focus:ring-1 focus:ring-[#0C55A0]/10 transition-all outline-none text-sm font-normal text-slate-800 placeholder:text-slate-400" />
                 </div>
                 <div>
-                  <label className="block text-sm font-bold text-slate-700 mb-2 ml-1">Business Nature</label>
+                  <label className="block text-sm font-medium text-slate-700 mb-1 ml-1">Business Nature</label>
                   <input type="text" name="businessNature" value={form.businessNature} onChange={handleChange} placeholder="e.g. Manufacturer, Retail"
-                    className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50 hover:bg-slate-100/50 focus:bg-white focus:border-[#0C55A0] focus:ring-4 focus:ring-[#0C55A0]/10 transition-all outline-none text-sm font-medium text-slate-800" />
+                    className="w-full px-4 py-1.5 rounded border border-slate-200 bg-slate-50 hover:bg-slate-100/50 focus:bg-white focus:border-[#0C55A0] focus:ring-1 focus:ring-[#0C55A0]/10 transition-all outline-none text-sm font-normal text-slate-800 placeholder:text-slate-400" />
                 </div>
               </div>
 
               {/* Contact */}
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 <div>
-                  <label className="block text-sm font-bold text-slate-700 mb-2 ml-1">Email</label>
+                  <label className="block text-sm font-medium text-slate-700 mb-1 ml-1">Email</label>
                   <input type="email" name="email" value={form.email} onChange={handleChange} placeholder="contact@company.com"
-                    className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50 hover:bg-slate-100/50 focus:bg-white focus:border-[#0C55A0] focus:ring-4 focus:ring-[#0C55A0]/10 transition-all outline-none text-sm font-medium text-slate-800" />
+                    className="w-full px-4 py-1.5 rounded border border-slate-200 bg-slate-50 hover:bg-slate-100/50 focus:bg-white focus:border-[#0C55A0] focus:ring-1 focus:ring-[#0C55A0]/10 transition-all outline-none text-sm font-normal text-slate-800 placeholder:text-slate-400" />
                 </div>
                 <div>
-                  <label className="block text-sm font-bold text-slate-700 mb-2 ml-1">Phone</label>
+                  <label className="block text-sm font-medium text-slate-700 mb-1 ml-1">Phone</label>
                   <input type="text" name="phone" value={form.phone} onChange={handleChange} placeholder="+91 9000000000"
-                    className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50 hover:bg-slate-100/50 focus:bg-white focus:border-[#0C55A0] focus:ring-4 focus:ring-[#0C55A0]/10 transition-all outline-none text-sm font-medium text-slate-800" />
+                    className="w-full px-4 py-1.5 rounded border border-slate-200 bg-slate-50 hover:bg-slate-100/50 focus:bg-white focus:border-[#0C55A0] focus:ring-1 focus:ring-[#0C55A0]/10 transition-all outline-none text-sm font-normal text-slate-800 placeholder:text-slate-400" />
                 </div>
                 <div>
-                  <label className="block text-sm font-bold text-slate-700 mb-2 ml-1">Website</label>
+                  <label className="block text-sm font-medium text-slate-700 mb-1 ml-1">Website</label>
                   <input type="text" name="website" value={form.website} onChange={handleChange} placeholder="www.domain.com"
-                    className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50 hover:bg-slate-100/50 focus:bg-white focus:border-[#0C55A0] focus:ring-4 focus:ring-[#0C55A0]/10 transition-all outline-none text-sm font-medium text-slate-800" />
+                    className="w-full px-4 py-1.5 rounded border border-slate-200 bg-slate-50 hover:bg-slate-100/50 focus:bg-white focus:border-[#0C55A0] focus:ring-1 focus:ring-[#0C55A0]/10 transition-all outline-none text-sm font-normal text-slate-800 placeholder:text-slate-400" />
                 </div>
               </div>
 
               {/* Address */}
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
                 <div className="md:col-span-3">
-                  <label className="block text-sm font-bold text-slate-700 mb-2 ml-1">Street Address</label>
+                  <label className="block text-sm font-medium text-slate-700 mb-1 ml-1">Street Address</label>
                   <input type="text" name="address.street" value={form["address.street"]} onChange={handleChange} placeholder="123 Main St..."
-                    className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50 hover:bg-slate-100/50 focus:bg-white focus:border-[#0C55A0] focus:ring-4 focus:ring-[#0C55A0]/10 transition-all outline-none text-sm font-medium text-slate-800" />
+                    className="w-full px-4 py-1.5 rounded border border-slate-200 bg-slate-50 hover:bg-slate-100/50 focus:bg-white focus:border-[#0C55A0] focus:ring-1 focus:ring-[#0C55A0]/10 transition-all outline-none text-sm font-normal text-slate-800 placeholder:text-slate-400" />
                 </div>
                 <div>
-                  <label className="block text-sm font-bold text-slate-700 mb-2 ml-1">City</label>
+                  <label className="block text-sm font-medium text-slate-700 mb-1 ml-1">City</label>
                   <input type="text" name="address.city" value={form["address.city"]} onChange={handleChange} placeholder="City"
-                    className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50 hover:bg-slate-100/50 focus:bg-white focus:border-[#0C55A0] focus:ring-4 focus:ring-[#0C55A0]/10 transition-all outline-none text-sm font-medium text-slate-800" />
+                    className="w-full px-4 py-1.5 rounded border border-slate-200 bg-slate-50 hover:bg-slate-100/50 focus:bg-white focus:border-[#0C55A0] focus:ring-1 focus:ring-[#0C55A0]/10 transition-all outline-none text-sm font-normal text-slate-800 placeholder:text-slate-400" />
                 </div>
                 <div>
-                  <label className="block text-sm font-bold text-slate-700 mb-2 ml-1">State</label>
+                  <label className="block text-sm font-medium text-slate-700 mb-1 ml-1">State</label>
                   <input type="text" name="address.state" value={form["address.state"]} onChange={handleChange} placeholder="State"
-                    className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50 hover:bg-slate-100/50 focus:bg-white focus:border-[#0C55A0] focus:ring-4 focus:ring-[#0C55A0]/10 transition-all outline-none text-sm font-medium text-slate-800" />
+                    className="w-full px-4 py-1.5 rounded border border-slate-200 bg-slate-50 hover:bg-slate-100/50 focus:bg-white focus:border-[#0C55A0] focus:ring-1 focus:ring-[#0C55A0]/10 transition-all outline-none text-sm font-normal text-slate-800 placeholder:text-slate-400" />
                 </div>
                 <div>
-                  <label className="block text-sm font-bold text-slate-700 mb-2 ml-1">Pincode</label>
+                  <label className="block text-sm font-medium text-slate-700 mb-1 ml-1">Pincode</label>
                   <input type="text" name="address.pincode" value={form["address.pincode"]} onChange={handleChange} placeholder="110001"
-                    className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50 hover:bg-slate-100/50 focus:bg-white focus:border-[#0C55A0] focus:ring-4 focus:ring-[#0C55A0]/10 transition-all outline-none text-sm font-medium text-slate-800" />
+                    className="w-full px-4 py-1.5 rounded border border-slate-200 bg-slate-50 hover:bg-slate-100/50 focus:bg-white focus:border-[#0C55A0] focus:ring-1 focus:ring-[#0C55A0]/10 transition-all outline-none text-sm font-normal text-slate-800 placeholder:text-slate-400" />
                 </div>
               </div>
 
               {/* Legal */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-sm font-bold text-slate-700 mb-2 ml-1">GST Number</label>
+                  <label className="block text-sm font-medium text-slate-700 mb-1 ml-1">GST Number</label>
                   <input type="text" name="gstNumber" value={form.gstNumber} onChange={handleChange} placeholder="GSTIN"
-                    className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50 hover:bg-slate-100/50 focus:bg-white focus:border-[#0C55A0] focus:ring-4 focus:ring-[#0C55A0]/10 transition-all outline-none text-sm font-medium text-slate-800 uppercase" />
+                    className="w-full px-4 py-1.5 rounded border border-slate-200 bg-slate-50 hover:bg-slate-100/50 focus:bg-white focus:border-[#0C55A0] focus:ring-1 focus:ring-[#0C55A0]/10 transition-all outline-none text-sm font-normal text-slate-800 placeholder:text-slate-400 uppercase" />
                 </div>
                 <div>
-                  <label className="block text-sm font-bold text-slate-700 mb-2 ml-1">PAN Number</label>
+                  <label className="block text-sm font-medium text-slate-700 mb-1 ml-1">PAN Number</label>
                   <input type="text" name="panNumber" value={form.panNumber} onChange={handleChange} placeholder="PAN"
-                    className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50 hover:bg-slate-100/50 focus:bg-white focus:border-[#0C55A0] focus:ring-4 focus:ring-[#0C55A0]/10 transition-all outline-none text-sm font-medium text-slate-800 uppercase" />
+                    className="w-full px-4 py-1.5 rounded border border-slate-200 bg-slate-50 hover:bg-slate-100/50 focus:bg-white focus:border-[#0C55A0] focus:ring-1 focus:ring-[#0C55A0]/10 transition-all outline-none text-sm font-normal text-slate-800 placeholder:text-slate-400 uppercase" />
                 </div>
               </div>
 
               {/* Description */}
               <div>
-                <label className="block text-sm font-bold text-slate-700 mb-2 ml-1">Description</label>
-                <textarea name="description" rows="3" value={form.description} onChange={handleChange} placeholder="Brief details about the company..."
-                  className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50 hover:bg-slate-100/50 focus:bg-white focus:border-[#0C55A0] focus:ring-4 focus:ring-[#0C55A0]/10 transition-all outline-none text-sm font-medium text-slate-800 resize-none" />
+                <label className="block text-sm font-medium text-slate-700 mb-1 ml-1">Description</label>
+                <textarea name="description" rows="2" value={form.description} onChange={handleChange} placeholder="Brief details about the company..."
+                  className="w-full px-4 py-1.5 rounded border border-slate-200 bg-slate-50 hover:bg-slate-100/50 focus:bg-white focus:border-[#0C55A0] focus:ring-1 focus:ring-[#0C55A0]/10 transition-all outline-none text-sm font-normal text-slate-800 placeholder:text-slate-400 resize-none" />
               </div>
             </div>
 
             {/* RIGHT: LOGO UPLOAD & SETTINGS */}
             <div className="xl:col-span-1 space-y-6">
               <div className="relative group h-64">
-                <label className="block text-sm font-bold text-slate-700 mb-2 ml-1">Company Logo</label>
+                <label className="block text-sm font-medium text-slate-700 mb-1 ml-1">Company Logo</label>
                 <div className={`h-full border-2 border-dashed rounded-[2rem] flex flex-col items-center justify-center transition-all duration-300 overflow-hidden relative
                           ${logoPreview ? 'border-transparent shadow-md' : 'border-slate-300 hover:border-[#0C55A0]/50 bg-slate-50 hover:bg-blue-50/30 cursor-pointer'}`}>
                   {logoPreview ? (
@@ -367,15 +367,15 @@ export default function Companies() {
 
               <div className="bg-slate-50 p-5 rounded-3xl border border-slate-100 space-y-4">
                 <div>
-                  <label className="block text-sm font-bold text-slate-700 mb-2 ml-1">SaaS Plan</label>
-                  <select name="plan" value={form.plan} onChange={handleChange} className="w-full px-4 py-3 rounded-xl border border-slate-200 focus:bg-white focus:border-[#0C55A0] focus:ring-4 focus:ring-[#0C55A0]/10 transition-all outline-none text-sm font-medium text-slate-800 cursor-pointer">
+                  <label className="block text-sm font-medium text-slate-700 mb-1 ml-1">SaaS Plan</label>
+                  <select name="plan" value={form.plan} onChange={handleChange} className="w-full px-4 py-1.5 rounded border border-slate-200 focus:bg-white focus:border-[#0C55A0] focus:ring-1 focus:ring-[#0C55A0]/10 transition-all outline-none text-sm font-normal text-slate-800 cursor-pointer">
                     <option value="Free">Free Plan</option>
                     <option value="Basic">Basic</option>
                     <option value="Pro">Pro Plan</option>
                   </select>
                 </div>
                 <div className="flex items-center justify-between px-2">
-                  <label className="text-sm font-bold text-slate-700 cursor-pointer" htmlFor="allowCredit">Allow Credit Mode</label>
+                  <label className="text-sm font-medium text-slate-700 cursor-pointer" htmlFor="allowCredit">Allow Credit Mode</label>
                   <div className="relative inline-block w-10 mr-2 align-middle select-none transition duration-200 ease-in">
                     <input type="checkbox" name="settings.allowCredit" id="allowCredit" checked={form["settings.allowCredit"]} onChange={handleChange} className="toggle-checkbox absolute block w-5 h-5 rounded-full bg-white border-4 appearance-none cursor-pointer border-slate-200 checked:right-0 checked:border-green-500 transition-all" />
                     <label htmlFor="allowCredit" className={`toggle-label block overflow-hidden h-5 rounded-full cursor-pointer ${form["settings.allowCredit"] ? 'bg-green-500' : 'bg-slate-200'}`}></label>
@@ -385,22 +385,22 @@ export default function Companies() {
             </div>
           </div>
 
-          <div className="mt-8 pt-6 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between gap-6">
+          <div className="mt-2 pt-2 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between gap-6">
             <div className="w-full sm:w-48">
-              <label className="block text-sm font-bold text-slate-700 mb-2 ml-1">Status</label>
-              <select name="status" value={form.status} onChange={handleChange} className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50 hover:bg-slate-100/50 focus:bg-white focus:border-[#0C55A0] focus:ring-4 focus:ring-[#0C55A0]/10 transition-all outline-none text-sm font-medium text-slate-800 cursor-pointer">
+              <label className="block text-sm font-medium text-slate-700 mb-1 ml-1">Status</label>
+              <select name="status" value={form.status} onChange={handleChange} className="w-full px-4 py-1.5 rounded border border-slate-200 bg-slate-50 hover:bg-slate-100/50 focus:bg-white focus:border-[#0C55A0] focus:ring-1 focus:ring-[#0C55A0]/10 transition-all outline-none text-sm font-normal text-slate-800 cursor-pointer">
                 <option value="Active">Active</option>
                 <option value="Inactive">Inactive</option>
               </select>
             </div>
 
-            <div className="flex items-center gap-3 w-full sm:w-auto">
+            <div className="flex items-center gap-6 w-full sm:w-auto">
               {(editId || form.name || form.email || logoPreview) && (
-                <button type="button" onClick={resetForm} className="w-full sm:w-auto px-6 py-3 bg-slate-100 text-slate-700 font-bold text-sm rounded-xl hover:bg-slate-200 transition-all active:scale-95">
+                <button type="button" onClick={resetForm} className="w-full sm:w-auto px-6 py-1.5 bg-slate-100 text-slate-700 font-medium text-sm rounded hover:bg-slate-200 transition-all active:scale-95">
                   Cancel
                 </button>
               )}
-              <button type="submit" disabled={loading} className="w-full sm:w-auto px-8 py-3 bg-gradient-to-r from-[#F36B2A] to-[#e05a1d] text-white font-bold text-sm rounded-xl shadow-md hover:shadow-lg hover:-translate-y-0.5 transition-all active:scale-95 disabled:opacity-70 disabled:cursor-not-allowed">
+              <button type="submit" disabled={loading} className="w-full sm:w-auto px-8 py-1.5 bg-gradient-to-r from-[#F36B2A] to-[#e05a1d] text-white font-medium text-sm rounded shadow-md hover:shadow-lg hover:-translate-y-0.5 transition-all active:scale-95 disabled:opacity-70 disabled:cursor-not-allowed">
                 {loading ? 'Processing...' : editId ? 'Update Company' : 'Register Company'}
               </button>
             </div>
@@ -409,11 +409,11 @@ export default function Companies() {
       </div>
 
       {/* ── Companies Table ── */}
-      <div className="bg-white rounded-3xl shadow-sm border border-slate-100 overflow-hidden">
-        <div className="px-8 py-6 border-b border-slate-100 flex flex-col sm:flex-row justify-between items-start sm:items-center bg-slate-50/50 gap-4">
+      <div className="bg-white rounded-lg shadow-sm border border-slate-100 overflow-hidden">
+        <div className="bg-gradient-to-r from-[#0C55A0] to-[#0a4685] px-8 py-2 border-b border-slate-100 flex justify-between items-center bg-slate-50/50">
           <div>
-            <h2 className="text-slate-800 font-extrabold text-lg tracking-tight">Registered Companies</h2>
-            <p className="text-sm font-medium text-slate-500 mt-0.5">Manage {filteredCompanies.length} Business Accounts</p>
+            <h2 className="text-slate-200 font-medium text-lg tracking-tight">Registered Companies</h2>
+            <p className="text-sm font-normal text-slate-200">Manage {filteredCompanies.length} Business Accounts</p>
           </div>
 
           <div className="relative w-full sm:w-auto">
@@ -422,7 +422,7 @@ export default function Companies() {
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               placeholder="Search by name or email..."
-              className="w-full sm:w-72 pl-10 pr-4 py-2.5 bg-white border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-200 shadow-sm"
+              className="w-full sm:w-72 pl-10 pr-4 py-1.5 bg-white border border-slate-200 rounded text-sm focus:outline-none focus:ring-2 focus:ring-blue-200 shadow-sm"
             />
           </div>
         </div>
