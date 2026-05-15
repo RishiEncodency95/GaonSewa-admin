@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
+import { createActivityLogThunk } from "../activityLog/activityLogSlice";
 
 const API_URL = `${import.meta.env.VITE_API_URL}/hero`;
 
@@ -45,6 +46,13 @@ export const addHero = createAsyncThunk("hero/addHero", async (formData, thunkAP
                 // Content-Type axios khud set kar deta hai FormData ke liye
             },
         });
+        const user = JSON.parse(localStorage.getItem('user'));
+        thunkAPI.dispatch(createActivityLogThunk({
+            user_id: user?._id || user?.id,
+            message: `Created new hero banner: ${formData.get('title') || 'Banner'}`,
+            section: 'Hero',
+            link: '/hero'
+        }));
         return data.hero || data.data || data;
     } catch (error) {
         return thunkAPI.rejectWithValue(error.response?.data?.message || error.message);
@@ -58,6 +66,13 @@ export const updateHero = createAsyncThunk("hero/updateHero", async ({ id, formD
                 Authorization: `Bearer ${localStorage.getItem("token")}`,
             },
         });
+        const user = JSON.parse(localStorage.getItem('user'));
+        thunkAPI.dispatch(createActivityLogThunk({
+            user_id: user?._id || user?.id,
+            message: `Updated hero banner: ${formData.get('title') || 'Banner'}`,
+            section: 'Hero',
+            link: '/hero'
+        }));
         return data.hero || data.data || data;
     } catch (error) {
         return thunkAPI.rejectWithValue(error.response?.data?.message || error.message);
@@ -67,6 +82,13 @@ export const updateHero = createAsyncThunk("hero/updateHero", async ({ id, formD
 export const deleteHero = createAsyncThunk("hero/deleteHero", async (id, thunkAPI) => {
     try {
         await axios.delete(`${API_URL}/${id}`, getAuthHeader());
+        const user = JSON.parse(localStorage.getItem('user'));
+        thunkAPI.dispatch(createActivityLogThunk({
+            user_id: user?._id || user?.id,
+            message: `Deleted a hero banner`,
+            section: 'Hero',
+            link: '/hero'
+        }));
         return id;
     } catch (error) {
         return thunkAPI.rejectWithValue(error.response?.data?.message || error.message);

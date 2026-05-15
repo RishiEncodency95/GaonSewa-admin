@@ -22,7 +22,7 @@ const Hero = () => {
 
     const [editId, setEditId] = useState(null);
     const [formData, setFormData] = useState({
-        title: '', subtitle: '', description: '', buttonName: '', buttonLink: '', image: null
+        title: '', subtitle: '', description: '', buttonName: '', buttonLink: '', status: 'Active', image: null
     });
     const [imagePreview, setImagePreview] = useState(null);
 
@@ -62,7 +62,7 @@ const Hero = () => {
 
     const resetForm = () => {
         setEditId(null);
-        setFormData({ title: '', subtitle: '', description: '', buttonName: '', buttonLink: '', image: null });
+        setFormData({ title: '', subtitle: '', description: '', buttonName: '', buttonLink: '', status: 'Active', image: null });
         setImagePreview(null);
     };
 
@@ -74,23 +74,37 @@ const Hero = () => {
             return;
         }
 
+        // Fetch user from localStorage to log added_by / updated_by
+        let userName = "Admin";
+        try {
+            const storedUser = JSON.parse(localStorage.getItem("user"));
+            if (storedUser && storedUser.name) {
+                userName = storedUser.name;
+            }
+        } catch (err) {
+            console.error("Error fetching user from local storage", err);
+        }
+
         const data = new FormData();
         data.append('title', formData.title);
         data.append('subtitle', formData.subtitle);
         data.append('description', formData.description);
         data.append('buttonName', formData.buttonName);
         data.append('buttonLink', formData.buttonLink);
+        data.append('status', formData.status);
         if (formData.image instanceof File) {
             data.append('image', formData.image);
         }
 
         if (editId) {
+            data.append('updated_by', userName);
             const result = await dispatch(updateHero({ id: editId, formData: data }));
             if (updateHero.fulfilled.match(result)) {
                 showToast.success('Hero updated successfully!');
                 resetForm();
             }
         } else {
+            data.append('added_by', userName);
             const result = await dispatch(addHero(data));
             if (addHero.fulfilled.match(result)) {
                 showToast.success('Hero added successfully!');
@@ -107,6 +121,7 @@ const Hero = () => {
             description: hero.description || '',
             buttonName: hero.buttonName || '',
             buttonLink: hero.buttonLink || '',
+            status: hero.status || 'Active',
             image: null
         });
         setImagePreview(hero.image?.url || null);

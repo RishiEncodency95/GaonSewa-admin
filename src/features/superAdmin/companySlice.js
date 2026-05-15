@@ -1,6 +1,7 @@
 // src/redux/slices/companySlice.js
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
+import { createActivityLogThunk } from "../activityLog/activityLogSlice";
 
 const BASE_URL = `${import.meta.env.VITE_API_URL}/companies`;
 
@@ -13,6 +14,13 @@ export const createCompany = createAsyncThunk(
     async (data, thunkAPI) => {
         try {
             const res = await axios.post(BASE_URL, data);
+            const user = JSON.parse(localStorage.getItem('user'));
+            thunkAPI.dispatch(createActivityLogThunk({
+                user_id: user?._id || user?.id,
+                message: `Created new company: ${data.name}`,
+                section: 'Companies',
+                link: '/companies'
+            }));
             return res.data;
         } catch (err) {
             return thunkAPI.rejectWithValue(err.response?.data?.message || err.message);
@@ -52,6 +60,13 @@ export const updateCompany = createAsyncThunk(
     async ({ id, data }, thunkAPI) => {
         try {
             const res = await axios.put(`${BASE_URL}/${id}`, data);
+            const user = JSON.parse(localStorage.getItem('user'));
+            thunkAPI.dispatch(createActivityLogThunk({
+                user_id: user?._id || user?.id,
+                message: `Updated company: ${data.name}`,
+                section: 'Companies',
+                link: '/companies'
+            }));
             return res.data;
         } catch (err) {
             return thunkAPI.rejectWithValue(err.response?.data?.message || err.message);
@@ -65,6 +80,13 @@ export const deleteCompany = createAsyncThunk(
     async (id, thunkAPI) => {
         try {
             await axios.delete(`${BASE_URL}/${id}`);
+            const user = JSON.parse(localStorage.getItem('user'));
+            thunkAPI.dispatch(createActivityLogThunk({
+                user_id: user?._id || user?.id,
+                message: `Deleted a company`,
+                section: 'Companies',
+                link: '/companies'
+            }));
             return id;
         } catch (err) {
             return thunkAPI.rejectWithValue(err.response?.data?.message || err.message);

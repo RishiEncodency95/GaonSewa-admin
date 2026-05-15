@@ -6,6 +6,10 @@ import companyReducer from "../features/superAdmin/companySlice";
 import branchReducer from "../features/superAdmin/branchSlice";
 import usersReducer from "../features/superAdmin/userSlice";
 import heroReducer from "../features/website/heroSlice";
+import rolesReducer from "../features/add_by_admin/roleSlice";
+import sidebarsReducer from "../features/add_by_admin/sidebarSlice"
+import roleRightsReducer from "../features/add_by_admin/role_rights/roleRightsSlice";
+import activityLogReducer from "../features/activityLog/activityLogSlice";
 
 export const store = configureStore({
     reducer: {
@@ -16,5 +20,9 @@ export const store = configureStore({
         branch: branchReducer,
         users: usersReducer,
         hero: heroReducer,
+        roles: rolesReducer,
+        sidebars: sidebarsReducer,
+        roleRights: roleRightsReducer,
+        activityLogs: activityLogReducer,
     },
 });

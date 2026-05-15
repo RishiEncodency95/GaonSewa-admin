@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
+import { createActivityLogThunk } from '../activityLog/activityLogSlice';
 
 const API_URL = `${import.meta.env.VITE_API_URL}/products`;
 
@@ -21,9 +22,16 @@ export const fetchProducts = createAsyncThunk(
 
 export const addProduct = createAsyncThunk(
   'inventory/addProduct',
-  async (productData, { rejectWithValue }) => {
+  async (productData, { dispatch, rejectWithValue }) => {
     try {
       const response = await axios.post(API_URL, productData, getAuthHeader());
+      const user = JSON.parse(localStorage.getItem('user'));
+      dispatch(createActivityLogThunk({
+        user_id: user?._id || user?.id,
+        message: `Added new product: ${productData.get('name') || 'Product'}`,
+        section: 'Inventory',
+        link: '/inventory'
+      }));
       return response.data.data.product;
     } catch (error) {
       return rejectWithValue(error.response.data.message);
@@ -33,9 +41,16 @@ export const addProduct = createAsyncThunk(
 
 export const deleteProductById = createAsyncThunk(
   'inventory/deleteProduct',
-  async (id, { rejectWithValue }) => {
+  async (id, { dispatch, rejectWithValue }) => {
     try {
       await axios.delete(`${API_URL}/${id}`, getAuthHeader());
+      const user = JSON.parse(localStorage.getItem('user'));
+      dispatch(createActivityLogThunk({
+        user_id: user?._id || user?.id,
+        message: `Deleted a product`,
+        section: 'Inventory',
+        link: '/inventory'
+      }));
       return id;
     } catch (error) {
       return rejectWithValue(error.response.data.message);

@@ -118,6 +118,17 @@ export default function Branches() {
       return;
     }
 
+    // Fetch user from localStorage to log added_by / updated_by
+    let userName = "Admin";
+    try {
+      const storedUser = JSON.parse(localStorage.getItem("user"));
+      if (storedUser && storedUser.name) {
+        userName = storedUser.name;
+      }
+    } catch (err) {
+      console.error("Error fetching user from local storage", err);
+    }
+
     const payload = {
       name: form.name,
       companyId,
@@ -140,7 +151,7 @@ export default function Branches() {
 
     try {
       if (editId) {
-        const result = await dispatch(updateBranch({ id: editId, data: payload }));
+        const result = await dispatch(updateBranch({ id: editId, data: { ...payload, updated_by: userName } }));
         if (!result.error) {
           showToast.success("Branch updated successfully!");
           dispatch(getBranches(companyId)); // Force refresh table data
@@ -149,7 +160,7 @@ export default function Branches() {
           showToast.error(result.payload || "Failed to update branch");
         }
       } else {
-        const result = await dispatch(createBranch(payload));
+        const result = await dispatch(createBranch({ ...payload, added_by: userName }));
         if (!result.error) {
           showToast.success("Branch added successfully!");
           dispatch(getBranches(companyId)); // Force refresh table data

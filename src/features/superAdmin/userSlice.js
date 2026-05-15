@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
+import { createActivityLogThunk } from '../activityLog/activityLogSlice';
 
 const API_URL = `${import.meta.env.VITE_API_URL}/users`;
 
@@ -25,27 +26,48 @@ export const fetchAllUsers = createAsyncThunk('user/fetchAll', async (_, { rejec
     }
 });
 
-export const createUser = createAsyncThunk('user/create', async (data, { rejectWithValue }) => {
+export const createUser = createAsyncThunk('user/create', async (data, { dispatch, rejectWithValue }) => {
     try {
         const res = await axios.post(API_URL, data, getAuthHeader());
+        const user = JSON.parse(localStorage.getItem('user'));
+        dispatch(createActivityLogThunk({
+            user_id: user?._id || user?.id,
+            message: `Created new user: ${data.name}`,
+            section: 'Users',
+            link: '/users'
+        }));
         return res.data.data.user;
     } catch (err) {
         return rejectWithValue(err.response?.data?.message || 'Failed to create user');
     }
 });
 
-export const updateUser = createAsyncThunk('user/update', async ({ id, data }, { rejectWithValue }) => {
+export const updateUser = createAsyncThunk('user/update', async ({ id, data }, { dispatch, rejectWithValue }) => {
     try {
         const res = await axios.patch(`${API_URL}/${id}`, data, getAuthHeader());
+        const user = JSON.parse(localStorage.getItem('user'));
+        dispatch(createActivityLogThunk({
+            user_id: user?._id || user?.id,
+            message: `Updated user: ${data.name || 'User'}`,
+            section: 'Users',
+            link: '/users'
+        }));
         return res.data.data.user;
     } catch (err) {
         return rejectWithValue(err.response?.data?.message || 'Failed to update user');
     }
 });
 
-export const deleteUser = createAsyncThunk('user/delete', async (id, { rejectWithValue }) => {
+export const deleteUser = createAsyncThunk('user/delete', async (id, { dispatch, rejectWithValue }) => {
     try {
         await axios.delete(`${API_URL}/${id}`, getAuthHeader());
+        const user = JSON.parse(localStorage.getItem('user'));
+        dispatch(createActivityLogThunk({
+            user_id: user?._id || user?.id,
+            message: `Deleted a user`,
+            section: 'Users',
+            link: '/users'
+        }));
         return id;
     } catch (err) {
         return rejectWithValue(err.response?.data?.message || 'Failed to delete user');

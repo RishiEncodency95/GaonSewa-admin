@@ -1,6 +1,7 @@
 // src/redux/slices/branchSlice.js
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
+import { createActivityLogThunk } from "../activityLog/activityLogSlice";
 
 const API_URL = `${import.meta.env.VITE_API_URL}/companies`;
 const BASE_URL = `${API_URL}`;
@@ -13,6 +14,13 @@ export const createBranch = createAsyncThunk(
   async (data, thunkAPI) => {
     try {
       const res = await axios.post(`${BASE_URL}/branches`, data);
+      const user = JSON.parse(localStorage.getItem('user'));
+      thunkAPI.dispatch(createActivityLogThunk({
+        user_id: user?._id || user?.id,
+        message: `Created new branch: ${data.name}`,
+        section: 'Branches',
+        link: '/branches'
+      }));
       return res.data;
     } catch (err) {
       return thunkAPI.rejectWithValue(err.response?.data || err.message);
@@ -44,6 +52,13 @@ export const updateBranch = createAsyncThunk(
         `${BASE_URL}/branches/${id}`,
         data
       );
+      const user = JSON.parse(localStorage.getItem('user'));
+      thunkAPI.dispatch(createActivityLogThunk({
+        user_id: user?._id || user?.id,
+        message: `Updated branch: ${data.name}`,
+        section: 'Branches',
+        link: '/branches'
+      }));
       return res.data;
     } catch (err) {
       return thunkAPI.rejectWithValue(err.response?.data || err.message);
@@ -57,6 +72,13 @@ export const deleteBranch = createAsyncThunk(
   async (id, thunkAPI) => {
     try {
       await axios.delete(`${BASE_URL}/branches/${id}`);
+      const user = JSON.parse(localStorage.getItem('user'));
+      thunkAPI.dispatch(createActivityLogThunk({
+        user_id: user?._id || user?.id,
+        message: `Deleted a branch`,
+        section: 'Branches',
+        link: '/branches'
+      }));
       return id;
     } catch (err) {
       return thunkAPI.rejectWithValue(err.response?.data || err.message);
