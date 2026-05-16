@@ -12,7 +12,7 @@ const AddSidebar = () => {
     const [search, setSearch] = useState("");
     const [editId, setEditId] = useState(null);
     const [formData, setFormData] = useState({
-        label: "", path: "", section: "", icon: "", parentMenu: "", status: "Active", order: 0
+        label: "", path: "", section: "", sectionOrder: 0, icon: "", parentMenu: "", status: "Active", order: 0
     });
 
     const handleInputChange = (e) => {
@@ -21,7 +21,7 @@ const AddSidebar = () => {
 
     const resetForm = () => {
         setEditId(null);
-        setFormData({ label: "", path: "", section: "", icon: "", parentMenu: "", status: "Active", order: 0 });
+        setFormData({ label: "", path: "", section: "", sectionOrder: 0, icon: "", parentMenu: "", status: "Active", order: 0 });
     };
 
     // Pagination
@@ -76,6 +76,7 @@ const AddSidebar = () => {
         setEditId(item._id);
         setFormData({
             label: item.label || "", path: item.path || "", section: item.section || "",
+            sectionOrder: item.sectionOrder || 0,
             icon: item.icon || "", parentMenu: item.parentMenu || "", status: item.status || "Active",
             order: item.order || 0
         });
@@ -134,13 +135,13 @@ const AddSidebar = () => {
                             <input name="section" value={formData.section} onChange={handleInputChange} placeholder="e.g. MAIN, SUPER ADMIN"
                                 className="w-full px-4 py-1.5 rounded border border-slate-200 bg-slate-50 hover:bg-slate-100/50 focus:bg-white focus:border-[#0C55A0] focus:ring-1 focus:ring-[#0C55A0]/10 transition-all outline-none text-sm font-normal text-slate-800 placeholder:text-slate-400" />
                         </div>
-
-                        {/* Oreder By  */}
+                        {/* Section Order */}
                         <div>
-                            <label className="block text-sm font-medium text-slate-700 mb-1 ml-1">Order By <span className="text-red-500">*</span></label>
-                            <input type="number" name="order" value={formData.order} onChange={handleInputChange} placeholder="e.g. 1"
+                            <label className="block text-sm font-medium text-slate-700 mb-1 ml-1">Section Order <span className="text-red-500">*</span></label>
+                            <input type="number" name="sectionOrder" value={formData.sectionOrder} onChange={handleInputChange} placeholder="e.g. 1"
                                 className="w-full px-4 py-1.5 rounded border border-slate-200 bg-slate-50 hover:bg-slate-100/50 focus:bg-white focus:border-[#0C55A0] focus:ring-1 focus:ring-[#0C55A0]/10 transition-all outline-none text-sm font-normal text-slate-800 placeholder:text-slate-400" />
                         </div>
+
 
                         {/* Icon Dropdown */}
                         <div>
@@ -166,6 +167,12 @@ const AddSidebar = () => {
                                     <option key={label} value={label}>{label}</option>
                                 ))}
                             </select>
+                        </div>
+                        {/* Order By  */}
+                        <div>
+                            <label className="block text-sm font-medium text-slate-700 mb-1 ml-1">Order By <span className="text-red-500">*</span></label>
+                            <input type="number" name="order" value={formData.order} onChange={handleInputChange} placeholder="e.g. 1"
+                                className="w-full px-4 py-1.5 rounded border border-slate-200 bg-slate-50 hover:bg-slate-100/50 focus:bg-white focus:border-[#0C55A0] focus:ring-1 focus:ring-[#0C55A0]/10 transition-all outline-none text-sm font-normal text-slate-800 placeholder:text-slate-400" />
                         </div>
 
                         {/* Status Dropdown */}
@@ -216,7 +223,7 @@ const AddSidebar = () => {
                     <table className="w-full text-sm">
                         <thead className="bg-gray-50/50">
                             <tr>
-                                {['Label', 'Path', 'Section', 'Order', 'Parent Menu', 'Status', 'Actions'].map((h) => (
+                                {['Label', 'Path', 'Section', 'Order', 'Sec. Order', 'Parent Menu', 'Status', 'Actions'].map((h) => (
                                     <th key={h} className="text-left px-6 py-4 text-sm font-semibold text-gray-600 border-b border-slate-100">
                                         {h}
                                     </th>
@@ -250,6 +257,9 @@ const AddSidebar = () => {
                                         </td>
                                         <td className="px-6 py-4 text-center">
                                             <p className="text-sm font-bold text-[#0C55A0] bg-blue-50 w-8 h-8 flex items-center justify-center rounded-lg mx-auto">{item.order || 0}</p>
+                                        </td>
+                                        <td className="px-6 py-4 text-center">
+                                            <p className="text-sm font-bold text-purple-600 bg-purple-50 w-8 h-8 flex items-center justify-center rounded-lg mx-auto">{item.sectionOrder || 0}</p>
                                         </td>
                                         <td className="px-6 py-4">
                                             <span className="text-xs font-bold text-slate-500 uppercase tracking-wide">{item.parentMenu || 'None'}</span>

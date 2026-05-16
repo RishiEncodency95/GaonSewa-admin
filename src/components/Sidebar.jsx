@@ -36,19 +36,33 @@ export default function Sidebar() {
   ====================== */
   const buildSidebarData = (data) => {
     const sectionsMap = {};
+    
+    // Sort items by sectionOrder first, then internal order
     const activeItems = [...data]
       .filter((item) => item.status === "Active")
-      .sort((a, b) => (a.order || 0) - (b.order || 0));
+      .sort((a, b) => {
+        if ((a.sectionOrder || 0) !== (b.sectionOrder || 0)) {
+          return (a.sectionOrder || 0) - (b.sectionOrder || 0);
+        }
+        return (a.order || 0) - (b.order || 0);
+      });
 
     activeItems.forEach((item) => {
+      const sOrder = item.sectionOrder || 0;
       if (!sectionsMap[item.section]) {
         sectionsMap[item.section] = {
           section: item.section,
           items: [],
-          order: item.order || 0,
+          sectionOrder: sOrder,
         };
+      } else {
+        // Ensure we use the highest sectionOrder defined for any item in this section
+        if (sOrder > sectionsMap[item.section].sectionOrder) {
+          sectionsMap[item.section].sectionOrder = sOrder;
+        }
       }
 
+      // If this item is a root menu item (no parent)
       if (!item.parentMenu || item.parentMenu.trim() === "" || item.parentMenu === "None") {
         const children = activeItems.filter(
           (child) => child.parentMenu === item.label && child.section === item.section
@@ -61,7 +75,8 @@ export default function Sidebar() {
       }
     });
 
-    return Object.values(sectionsMap).sort((a, b) => a.order - b.order);
+    // Final sort of sections by sectionOrder
+    return Object.values(sectionsMap).sort((a, b) => a.sectionOrder - b.sectionOrder);
   };
 
   const sidebarData = buildSidebarData(sidebars);
