@@ -456,10 +456,6 @@ export default function Branches() {
                   </td>
                   <td className="px-6 py-4">
                     <div className="flex items-center gap-2">
-                      <button onClick={() => navigate(`/branch-users?branchId=${row._id}&branchName=${encodeURIComponent(row.name)}&companyId=${companyId}&companyName=${encodeURIComponent(companyName)}`)}
-                        className="p-2.5 hover:bg-green-500 hover:text-white rounded-xl text-green-600 transition-all shadow-sm bg-white border border-gray-100" title="Manage Users">
-                        <FiUsers size={18} />
-                      </button>
                       <button onClick={() => openEdit(row)}
                         className="p-2.5 hover:bg-indigo-500 hover:text-white rounded-xl text-indigo-600 transition-all shadow-sm bg-white border border-gray-100" title="Edit">
                         <MdEdit size={18} />

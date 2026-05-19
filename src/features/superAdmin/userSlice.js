@@ -8,6 +8,13 @@ const getAuthHeader = () => ({
     headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
 });
 
+const getMultipartHeader = () => ({
+    headers: {
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
+        'Content-Type': 'multipart/form-data'
+    }
+});
+
 export const fetchUsersByBranch = createAsyncThunk('user/fetchByBranch', async (branchId, { rejectWithValue }) => {
     try {
         const res = await axios.get(`${API_URL}/branch/${branchId}`, getAuthHeader());
@@ -28,11 +35,11 @@ export const fetchAllUsers = createAsyncThunk('user/fetchAll', async (_, { rejec
 
 export const createUser = createAsyncThunk('user/create', async (data, { dispatch, rejectWithValue }) => {
     try {
-        const res = await axios.post(API_URL, data, getAuthHeader());
+        const res = await axios.post(API_URL, data, getMultipartHeader());
         const user = JSON.parse(localStorage.getItem('user'));
         dispatch(createActivityLogThunk({
             user_id: user?._id || user?.id,
-            message: `Created new user: ${data.name}`,
+            message: `Created new user: ${data.get?.('name') || data.name || 'User'}`,
             section: 'Users',
             link: '/users'
         }));
@@ -44,11 +51,11 @@ export const createUser = createAsyncThunk('user/create', async (data, { dispatc
 
 export const updateUser = createAsyncThunk('user/update', async ({ id, data }, { dispatch, rejectWithValue }) => {
     try {
-        const res = await axios.patch(`${API_URL}/${id}`, data, getAuthHeader());
+        const res = await axios.patch(`${API_URL}/${id}`, data, getMultipartHeader());
         const user = JSON.parse(localStorage.getItem('user'));
         dispatch(createActivityLogThunk({
             user_id: user?._id || user?.id,
-            message: `Updated user: ${data.name || 'User'}`,
+            message: `Updated user: ${data.get?.('name') || data.name || 'User'}`,
             section: 'Users',
             link: '/users'
         }));

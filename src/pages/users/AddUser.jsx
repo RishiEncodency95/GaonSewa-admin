@@ -3,8 +3,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { createUser, updateUser, fetchAllUsers } from "../../features/superAdmin/userSlice";
 import { fetchRoles } from "../../features/add_by_admin/roleSlice";
 import { useNavigate, useLocation } from "react-router-dom";
-import { MdPerson, MdCloudUpload, MdArrowBack, MdSave, MdCancel } from "react-icons/md";
+import { MdPerson, MdCloudUpload, MdArrowBack, MdSave, MdCancel, MdVisibility, MdVisibilityOff } from "react-icons/md";
 import { showToast } from "../../utlity/toastUtils";
+import api from "../../features/api/axiosInstance";
 
 const INITIAL_FORM = {
   name: "",
@@ -17,9 +18,12 @@ const INITIAL_FORM = {
   street: "",
   city: "",
   state: "",
+  country: "",
   pincode: "",
   role: "",
   status: "Active",
+  companyId: "",
+  branchId: "",
 };
 
 const AddUser = () => {
@@ -35,39 +39,147 @@ const AddUser = () => {
   const [form, setForm] = useState(INITIAL_FORM);
   const [imagePreview, setImagePreview] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
+  const [companies, setCompanies] = useState([]);
+  const [branches, setBranches] = useState([]);
+  const [countriesList, setCountriesList] = useState([]);
+  const [statesList, setStatesList] = useState([]);
+  const [citiesList, setCitiesList] = useState([]);
+
+  // Fetch all companies on mount
+  useEffect(() => {
+    const loadCompanies = async () => {
+      try {
+        const res = await api.get("/companies");
+        setCompanies(res.data || []);
+      } catch (err) {
+        console.error("Error loading companies:", err);
+      }
+    };
+    loadCompanies();
+  }, []);
+
+  // Fetch branches of selected company
+  useEffect(() => {
+    if (form.companyId) {
+      const loadBranches = async () => {
+        try {
+          const selectedCompany = companies.find(c => c.name === form.companyId || c._id === form.companyId);
+          if (selectedCompany) {
+            const res = await api.get(`/companies/branches/company/${selectedCompany._id}`);
+            setBranches(res.data || []);
+          } else {
+            setBranches([]);
+          }
+        } catch (err) {
+          console.error("Error loading branches:", err);
+        }
+      };
+      loadBranches();
+    } else {
+      setBranches([]);
+    }
+  }, [form.companyId, companies]);
+
+  // Fetch countries on mount
+  useEffect(() => {
+    const loadCountries = async () => {
+      try {
+        const res = await api.get("/locations/countries");
+        setCountriesList(res.data || []);
+      } catch (err) {
+        console.error("Error loading countries:", err);
+      }
+    };
+    loadCountries();
+  }, []);
+
+  // Fetch states when country changes
+  useEffect(() => {
+    if (form.country) {
+      const loadStates = async () => {
+        try {
+          const res = await api.get(`/locations/states?country=${form.country}`);
+          setStatesList(res.data || []);
+        } catch (err) {
+          console.error("Error loading states:", err);
+        }
+      };
+      loadStates();
+    } else {
+      setStatesList([]);
+    }
+  }, [form.country]);
+
+  // Fetch cities when state changes
+  useEffect(() => {
+    if (form.state) {
+      const loadCities = async () => {
+        try {
+          const res = await api.get(`/locations/cities?state=${form.state}`);
+          setCitiesList(res.data || []);
+        } catch (err) {
+          console.error("Error loading cities:", err);
+        }
+      };
+      loadCities();
+    } else {
+      setCitiesList([]);
+    }
+  }, [form.state]);
+
+  // ── Fetch roles & users ONCE on mount ──────────────────────────────
   useEffect(() => {
     dispatch(fetchRoles());
-    if (editId) {
-      const userToEdit = users.find((u) => u._id === editId);
-      if (userToEdit) {
-        setForm({
-          name: userToEdit.name || "",
-          email: userToEdit.email || "",
-          password: "", // Don't pre-fill password for security
-          phone: userToEdit.phone || "",
-          gender: userToEdit.gender || "",
-          dateOfBirth: userToEdit.dateOfBirth ? new Date(userToEdit.dateOfBirth).toISOString().split('T')[0] : "",
-          profileImage: null,
-          street: userToEdit.address?.street || "",
-          city: userToEdit.address?.city || "",
-          state: userToEdit.address?.state || "",
-          pincode: userToEdit.address?.pincode || "",
-          role: userToEdit.role?._id || userToEdit.role || "",
-          status: userToEdit.status || "Active",
-        });
-        if (userToEdit.profileImage) {
-          setImagePreview(userToEdit.profileImage);
-        }
-      } else {
-        dispatch(fetchAllUsers()); // Fetch users if not already in state
-      }
+    dispatch(fetchAllUsers());
+  }, [dispatch]);
+
+  // ── Populate form when editing (runs when users or editId changes) ──
+  useEffect(() => {
+    if (!editId || users.length === 0) return;
+    const userToEdit = users.find((u) => u._id === editId);
+    if (!userToEdit) return;
+
+    setForm({
+      name: userToEdit.name || "",
+      email: userToEdit.email || "",
+      password: "",
+      phone: userToEdit.phone || "",
+      gender: userToEdit.gender || "",
+      dateOfBirth: userToEdit.dateOfBirth ? new Date(userToEdit.dateOfBirth).toISOString().split('T')[0] : "",
+      profileImage: null,
+      street: userToEdit.address?.street || "",
+      city: userToEdit.address?.city || "",
+      state: userToEdit.address?.state || "",
+      country: userToEdit.address?.country || "",
+      pincode: userToEdit.address?.pincode || "",
+      role: userToEdit.role?._id || userToEdit.role || "",
+      status: userToEdit.status || "Active",
+      companyId: userToEdit.companyId || "",
+      branchId: userToEdit.branchId || "",
+    });
+    if (userToEdit.profileImage) {
+      setImagePreview(userToEdit.profileImage);
     }
-  }, [editId, users, dispatch]);
+  }, [editId, users]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setForm((prev) => ({ ...prev, [name]: value }));
+    setForm((prev) => {
+      const updated = { ...prev, [name]: value };
+      if (name === "companyId") {
+        updated.branchId = "";
+      }
+      if (name === "country") {
+        updated.state = "";
+        updated.city = "";
+      }
+      if (name === "state") {
+        updated.city = "";
+      }
+      return updated;
+    });
   };
 
   const handleImageChange = (e) => {
@@ -84,9 +196,31 @@ const AddUser = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!form.name || !form.email || (!editId && !form.password) || !form.role) {
+    if (!form.name || !form.email || (!editId && !form.password) || !form.role || !form.companyId || !form.branchId || !form.country || !form.state || !form.city) {
       showToast.error("Please fill in all required fields (*)");
       return;
+    }
+
+    // ── Email Duplicate Check ──
+    const emailExists = users.some(
+      (u) =>
+        u._id !== editId &&
+        u.email?.toLowerCase() === form.email.toLowerCase()
+    );
+    if (emailExists) {
+      showToast.error("This email is already registered. Please use a different email address.");
+      return;
+    }
+
+    // ── Phone Duplicate Check ──
+    if (form.phone) {
+      const phoneExists = users.some(
+        (u) => u._id !== editId && u.phone === form.phone
+      );
+      if (phoneExists) {
+        showToast.error("This phone number is already registered. Please use a different phone number.");
+        return;
+      }
     }
 
     setIsSubmitting(true);
@@ -97,6 +231,7 @@ const AddUser = () => {
       street: form.street,
       city: form.city,
       state: form.state,
+      country: form.country,
       pincode: form.pincode,
     };
 
@@ -109,6 +244,8 @@ const AddUser = () => {
     formData.append("address", JSON.stringify(address));
     formData.append("role", form.role);
     formData.append("status", form.status);
+    if (form.companyId) formData.append("companyId", form.companyId);
+    if (form.branchId) formData.append("branchId", form.branchId);
 
     if (form.profileImage) {
       formData.append("profileImage", form.profileImage);
@@ -216,14 +353,23 @@ const AddUser = () => {
               {/* Password */}
               <div className="space-y-1.5">
                 <label className="text-xs font-black text-slate-500 uppercase tracking-widest ml-1">Password {!editId && <span className="text-red-500">*</span>}</label>
-                <input
-                  type="password"
-                  name="password"
-                  value={form.password}
-                  onChange={handleChange}
-                  placeholder={editId ? "Leave blank to keep current" : "••••••••"}
-                  className="w-full px-4 py-2.5 rounded-xl border border-slate-200 bg-slate-50 focus:bg-white focus:border-[#0C55A0] focus:ring-4 focus:ring-[#0C55A0]/10 transition-all outline-none text-sm font-medium"
-                />
+                <div className="relative">
+                  <input
+                    type={showPassword ? "text" : "password"}
+                    name="password"
+                    value={form.password}
+                    onChange={handleChange}
+                    placeholder={editId ? "Leave blank to keep current" : "••••••••"}
+                    className="w-full px-4 py-2.5 pr-12 rounded-xl border border-slate-200 bg-slate-50 focus:bg-white focus:border-[#0C55A0] focus:ring-4 focus:ring-[#0C55A0]/10 transition-all outline-none text-sm font-medium"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-[#0C55A0] transition-colors focus:outline-none"
+                  >
+                    {showPassword ? <MdVisibilityOff size={20} /> : <MdVisibility size={20} />}
+                  </button>
+                </div>
               </div>
 
               {/* Phone */}
@@ -297,23 +443,124 @@ const AddUser = () => {
                 </select>
               </div>
 
+              {/* Company */}
+              <div className="space-y-1.5">
+                <label className="text-xs font-black text-slate-500 uppercase tracking-widest ml-1">Company <span className="text-red-500">*</span></label>
+                <select
+                  name="companyId"
+                  value={form.companyId}
+                  onChange={handleChange}
+                  className="w-full px-4 py-2.5 rounded-xl border border-slate-200 bg-slate-50 focus:bg-white focus:border-[#0C55A0] transition-all outline-none text-sm font-medium cursor-pointer"
+                >
+                  <option value="">Select Company</option>
+                  {companies.map((c) => (
+                    <option key={c._id} value={c.name}>{c.name}</option>
+                  ))}
+                </select>
+              </div>
+
+              {/* Branch */}
+              <div className="space-y-1.5">
+                <label className="text-xs font-black text-slate-500 uppercase tracking-widest ml-1">Branch <span className="text-red-500">*</span></label>
+                <select
+                  name="branchId"
+                  value={form.branchId}
+                  onChange={handleChange}
+                  disabled={!form.companyId}
+                  className={`w-full px-4 py-2.5 rounded-xl border transition-all outline-none text-sm font-medium cursor-pointer
+                    ${!form.companyId ? 'bg-slate-100 text-slate-400 border-slate-200 cursor-not-allowed' : 'bg-slate-50 border-slate-200 focus:bg-white focus:border-[#0C55A0]'}`}
+                >
+                  <option value="">Select Branch</option>
+                  {branches.map((b) => (
+                    <option key={b._id} value={b.name}>{b.name}</option>
+                  ))}
+                </select>
+              </div>
+
               {/* ── Address Fields ── */}
-              <div className="md:col-span-2 mt-4">
+              <div className="md:col-span-2 mt-4 space-y-4">
                  <h3 className="text-xs font-black text-slate-400 uppercase tracking-[0.2em] mb-4 border-b border-slate-100 pb-2 flex items-center gap-2">
                    Location Details
                  </h3>
-                 <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-                    <div className="md:col-span-2">
-                       <input type="text" name="street" value={form.street} onChange={handleChange} placeholder="Street Address" 
-                              className="w-full px-4 py-2 rounded-lg border border-slate-200 bg-slate-50 focus:bg-white focus:border-[#0C55A0] transition-all outline-none text-sm font-medium" />
+                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    {/* Country Dropdown */}
+                    <div className="space-y-1">
+                       <label className="text-[10px] font-black text-slate-400 uppercase tracking-wider ml-1">Country <span className="text-red-500">*</span></label>
+                       <select
+                         name="country"
+                         value={form.country}
+                         onChange={handleChange}
+                         className="w-full px-4 py-2 rounded-lg border border-slate-200 bg-slate-50 focus:bg-white focus:border-[#0C55A0] transition-all outline-none text-sm font-medium cursor-pointer"
+                       >
+                         <option value="">Select Country</option>
+                         {countriesList.map((c) => (
+                           <option key={c} value={c}>{c}</option>
+                         ))}
+                       </select>
                     </div>
-                    <div>
-                       <input type="text" name="city" value={form.city} onChange={handleChange} placeholder="City" 
-                              className="w-full px-4 py-2 rounded-lg border border-slate-200 bg-slate-50 focus:bg-white focus:border-[#0C55A0] transition-all outline-none text-sm font-medium" />
+
+                    {/* State Dropdown */}
+                    <div className="space-y-1">
+                       <label className="text-[10px] font-black text-slate-400 uppercase tracking-wider ml-1">State <span className="text-red-500">*</span></label>
+                       <select
+                         name="state"
+                         value={form.state}
+                         onChange={handleChange}
+                         disabled={!form.country}
+                         className={`w-full px-4 py-2 rounded-lg border transition-all outline-none text-sm font-medium cursor-pointer
+                           ${!form.country ? 'bg-slate-100 text-slate-400 border-slate-200 cursor-not-allowed' : 'bg-slate-50 border-slate-200 focus:bg-white focus:border-[#0C55A0]'}`}
+                       >
+                         <option value="">Select State</option>
+                         {statesList.map((s) => (
+                           <option key={s} value={s}>{s}</option>
+                         ))}
+                       </select>
                     </div>
-                    <div>
-                       <input type="text" name="state" value={form.state} onChange={handleChange} placeholder="State" 
-                              className="w-full px-4 py-2 rounded-lg border border-slate-200 bg-slate-50 focus:bg-white focus:border-[#0C55A0] transition-all outline-none text-sm font-medium" />
+
+                    {/* City Dropdown */}
+                    <div className="space-y-1">
+                       <label className="text-[10px] font-black text-slate-400 uppercase tracking-wider ml-1">City <span className="text-red-500">*</span></label>
+                       <select
+                         name="city"
+                         value={form.city}
+                         onChange={handleChange}
+                         disabled={!form.state}
+                         className={`w-full px-4 py-2 rounded-lg border transition-all outline-none text-sm font-medium cursor-pointer
+                           ${!form.state ? 'bg-slate-100 text-slate-400 border-slate-200 cursor-not-allowed' : 'bg-slate-50 border-slate-200 focus:bg-white focus:border-[#0C55A0]'}`}
+                       >
+                         <option value="">Select City</option>
+                         {citiesList.map((c) => (
+                           <option key={c} value={c}>{c}</option>
+                         ))}
+                       </select>
+                    </div>
+                 </div>
+
+                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    {/* Street Address */}
+                    <div className="md:col-span-2 space-y-1">
+                       <label className="text-[10px] font-black text-slate-400 uppercase tracking-wider ml-1">Street Address</label>
+                       <input
+                         type="text"
+                         name="street"
+                         value={form.street}
+                         onChange={handleChange}
+                         placeholder="Street Address" 
+                         className="w-full px-4 py-2 rounded-lg border border-slate-200 bg-slate-50 focus:bg-white focus:border-[#0C55A0] transition-all outline-none text-sm font-medium"
+                       />
+                    </div>
+
+                    {/* Pincode */}
+                    <div className="space-y-1">
+                       <label className="text-[10px] font-black text-slate-400 uppercase tracking-wider ml-1">Pincode / Zipcode</label>
+                       <input
+                         type="text"
+                         name="pincode"
+                         value={form.pincode}
+                         onChange={handleChange}
+                         placeholder="110001" 
+                         className="w-full px-4 py-2 rounded-lg border border-slate-200 bg-slate-50 focus:bg-white focus:border-[#0C55A0] transition-all outline-none text-sm font-medium"
+                       />
                     </div>
                  </div>
               </div>

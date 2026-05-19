@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchAllUsers, deleteUser } from "../../features/superAdmin/userSlice";
 import { useNavigate } from "react-router-dom";
 import { MdPerson, MdEmail, MdPhone, MdEdit, MdDelete, MdNavigateNext, MdNavigateBefore, MdAdd } from "react-icons/md";
-import { FiSearch } from "react-icons/fi";
+import { FiSearch, FiFilter } from "react-icons/fi";
 import { showToast } from "../../utlity/toastUtils";
 
 const STATUS_COLORS = {
@@ -14,9 +14,11 @@ const STATUS_COLORS = {
 const UsersList = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
   const { users = [], loading, error } = useSelector((state) => state.users || {});
 
   const [search, setSearch] = useState("");
+  const [filterRole, setFilterRole] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
 
@@ -28,21 +30,25 @@ const UsersList = () => {
     if (error) showToast.error(error);
   }, [error]);
 
-  const filteredUsers = users.filter((u) =>
-    u.name?.toLowerCase().includes(search.toLowerCase()) ||
-    u.email?.toLowerCase().includes(search.toLowerCase())
-  );
+  const uniqueRoles = [...new Set(users.map(u => u.role?.roleName || u.role?.role).filter(Boolean))];
+
+  const filteredUsers = users.filter((u) => {
+    const matchesSearch = u.name?.toLowerCase().includes(search.toLowerCase()) || u.email?.toLowerCase().includes(search.toLowerCase());
+    const roleName = u.role?.roleName || u.role?.role || 'No Role';
+    const matchesRole = filterRole ? roleName === filterRole : true;
+    return matchesSearch && matchesRole;
+  });
 
   const totalPages = Math.ceil(filteredUsers.length / itemsPerPage) || 1;
   const currentUsers = filteredUsers.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
 
   const handleDelete = async (id) => {
-    if (window.confirm("Are you sure you want to delete this user?")) {
-      const result = await dispatch(deleteUser(id));
-      if (deleteUser.fulfilled.match(result)) {
-        showToast.success("User deleted successfully");
-      }
+
+    const result = await dispatch(deleteUser(id));
+    if (deleteUser.fulfilled.match(result)) {
+      showToast.success("User deleted successfully");
     }
+
   };
 
   const getPageNumbers = () => {
@@ -77,15 +83,30 @@ const UsersList = () => {
       <div className="bg-white rounded-xl shadow-sm border border-slate-100 overflow-hidden">
         <div className="bg-gradient-to-r from-[#0C55A0] to-[#0a4685] px-6 py-3 flex flex-col sm:flex-row justify-between items-center gap-4">
           <h2 className="text-white font-medium text-lg">User Directory</h2>
-          <div className="relative w-full sm:w-72">
-            <FiSearch className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
-            <input
-              type="text"
-              placeholder="Search users..."
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              className="w-full pl-10 pr-4 py-1.5 bg-white border-none rounded-lg text-sm focus:ring-2 focus:ring-blue-300 outline-none shadow-inner"
-            />
+          <div className="flex flex-col sm:flex-row items-center gap-3 w-full sm:w-auto">
+            <div className="relative w-full sm:w-48">
+              <FiFilter className="absolute left-3 top-1/2 -translate-y-1/2 text-white/70" size={16} />
+              <select
+                value={filterRole}
+                onChange={(e) => { setFilterRole(e.target.value); setCurrentPage(1); }}
+                className="w-full pl-9 pr-4 py-1.5 bg-white/10 text-white border border-white/20 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-white/50 appearance-none cursor-pointer [&>option]:text-slate-800"
+              >
+                <option value="">All Roles</option>
+                {uniqueRoles.map(r => (
+                  <option key={r} value={r}>{r}</option>
+                ))}
+              </select>
+            </div>
+            <div className="relative w-full sm:w-72">
+              <FiSearch className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
+              <input
+                type="text"
+                placeholder="Search users..."
+                value={search}
+                onChange={(e) => { setSearch(e.target.value); setCurrentPage(1); }}
+                className="w-full pl-10 pr-4 py-1.5 bg-white border-none rounded-lg text-sm focus:ring-2 focus:ring-blue-300 outline-none shadow-inner"
+              />
+            </div>
           </div>
         </div>
 
@@ -93,7 +114,7 @@ const UsersList = () => {
           <table className="w-full text-sm">
             <thead className="bg-slate-50">
               <tr>
-                {['#', 'User Details', 'Role', 'Contact', 'Status', 'Actions'].map((h) => (
+                {['#', 'User Details', 'Role', 'Company/Branch', 'Contact', 'Status', 'Actions'].map((h) => (
                   <th key={h} className="text-left px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider border-b border-slate-100">
                     {h}
                   </th>
@@ -140,6 +161,12 @@ const UsersList = () => {
                     <span className="px-3 py-1 rounded-full bg-blue-50 text-[#0C55A0] text-[11px] font-bold uppercase tracking-tight">
                       {user.role?.roleName || user.role?.role || 'No Role'}
                     </span>
+                  </td>
+                  <td className="px-6 py-4">
+                    <div className="space-y-1">
+                      <div className="text-xs font-bold text-slate-800">{user.companyId || 'N/A'}</div>
+                      <div className="text-xs text-slate-500">{user.branchId || 'N/A'}</div>
+                    </div>
                   </td>
                   <td className="px-6 py-4">
                     <div className="space-y-1">

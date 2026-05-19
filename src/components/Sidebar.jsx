@@ -2,8 +2,6 @@ import { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchSidebars } from "../features/add_by_admin/sidebarSlice";
-
-// Dynamically import all icons to render them from string names coming from the database
 import * as MdIcons from "react-icons/md";
 import * as FaIcons from "react-icons/fa";
 import * as Fa6Icons from "react-icons/fa6";
@@ -36,8 +34,7 @@ export default function Sidebar() {
   ====================== */
   const buildSidebarData = (data) => {
     const sectionsMap = {};
-    
-    // Sort items by sectionOrder first, then internal order
+
     const activeItems = [...data]
       .filter((item) => item.status === "Active")
       .sort((a, b) => {
