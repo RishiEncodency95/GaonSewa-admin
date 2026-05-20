@@ -209,7 +209,6 @@ export default function Companies() {
   };
 
   const handleDelete = async (id) => {
-    if (!window.confirm('Are you sure you want to delete this company? All branches will be affected.')) return;
     const result = await dispatch(deleteCompany(id));
     if (deleteCompany.fulfilled.match(result)) {
       showToast.success('Company deleted successfully!');

@@ -251,12 +251,12 @@ const RoleRights = () => {
 
   const handleDelete = (id) => {
     const currentUserId = authUser?.id || null;
-    if (window.confirm("Are you sure you want to delete these rights?")) {
+   
       dispatch(deleteRoleRights({ id, user_id: currentUserId })).then(() => {
         showToast.success("Role Rights deleted successfully");
         dispatch(getAllRoleRights());
       });
-    }
+    
   };
 
   const areAllSelected =

@@ -175,7 +175,7 @@ export default function Branches() {
   };
 
   const handleDelete = async (id) => {
-    if (!window.confirm("Are you sure you want to delete this branch? All users under it might be affected.")) return;
+
     const result = await dispatch(deleteBranch(id));
     if (!result.error) {
       showToast.success("Branch deleted successfully!");

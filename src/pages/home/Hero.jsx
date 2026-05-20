@@ -129,7 +129,7 @@ const Hero = () => {
     };
 
     const handleDelete = async (id) => {
-        if (!window.confirm('Are you sure you want to delete this hero?')) return;
+
         const result = await dispatch(deleteHero(id));
         if (deleteHero.fulfilled.match(result)) {
             showToast.success('Hero deleted successfully!');
